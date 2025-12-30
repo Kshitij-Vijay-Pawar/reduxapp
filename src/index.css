@@ -1,1 +1,49 @@
 @import "tailwindcss";
+
+/* Light theme default */
+:root {
+  --bg: #F9FAFB;
+  --surface: #FFFFFF;
+  --text: #111827;
+  --text-muted: #6B7280;
+  --primary: #7971EA;
+  --accent: #38BDF8;
+  --danger: #E53838;
+  --border: #E5E7EB;
+}
+
+/* Dark theme */
+.dark {
+  --bg: #222831;
+  --surface: #393E46;
+  --text: #EEEEEE;
+  --text-muted: #B0B3B8;
+  --primary: #7971EA;
+  --accent: #22D3EE;
+  --danger: #E53838;
+  --border: #4B5563;
+}
+
+
+
+
+*{
+    font-family: "halvetica neue", sans-serif;
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-6px); }
+  75% { transform: translateX(6px); }
+}
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+

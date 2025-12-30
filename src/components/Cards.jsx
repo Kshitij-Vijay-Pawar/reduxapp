@@ -1,14 +1,14 @@
 import React from "react";
 import { useDispatch } from "react-redux";
-import { addCollection } from "../redux/features/collecionSlice";
+import { removeCollection } from "../redux/features/collecionSlice";
 import { toast } from "react-toastify";
 
-const ResultCard = ({ item }) => {
+const Cards = ({ item }) => {
   const dispatch = useDispatch();
 
-  const addToCollection = () => {
-    dispatch(addCollection(item));
-    toast.success("Added to Collection");
+  const removeItem = () => {
+    dispatch(removeCollection(item.id));
+    toast.info("Removed from collection");
   };
 
   return (
@@ -26,11 +26,13 @@ const ResultCard = ({ item }) => {
       <div className="relative h-52 overflow-hidden">
         {item.type === "photo" && (
           <img
-            src={item.thumbnail}
+            src={item.url}
             alt={item.title}
-            className="w-full h-full object-cover
+            className="
+              w-full h-full object-cover
               transition-transform duration-500
-              group-hover:scale-110"
+              group-hover:scale-110
+            "
           />
         )}
 
@@ -40,9 +42,11 @@ const ResultCard = ({ item }) => {
             autoPlay
             loop
             muted
-            className="w-full h-full object-cover
+            className="
+              w-full h-full object-cover
               transition-transform duration-500
-              group-hover:scale-110"
+              group-hover:scale-110
+            "
           />
         )}
 
@@ -50,48 +54,43 @@ const ResultCard = ({ item }) => {
           <img
             src={item.url}
             alt={item.title}
-            className="w-full h-full object-cover
+            className="
+              w-full h-full object-cover
               transition-transform duration-500
-              group-hover:scale-110"
+              group-hover:scale-110
+            "
           />
         )}
 
-        {/* Hover Overlay */}
+        {/* Hover Delete Button */}
         <div
           className="
             absolute inset-0
             bg-black/50
             opacity-0
             group-hover:opacity-100
-            transition-opacity duration-100
+            transition
             flex items-center justify-center
           "
         >
           <button
-            onClick={addToCollection}
+            onClick={removeItem}
             className="
               px-4 py-2 rounded-lg
-              bg-(--primary) text-white
-              font-medium
-              scale-90 group-hover:scale-100
-              transition-transform duration-300
+              bg-(--danger)
+              text-white font-medium
               active:scale-95
-              cursor-pointer
+              transition
             "
           >
-            Save
+            Delete
           </button>
         </div>
       </div>
 
       {/* Bottom */}
       <div className="p-3">
-        <h3
-          className="
-            text-sm font-semibold capitalize
-            line-clamp-2
-          "
-        >
+        <h3 className="text-sm font-semibold capitalize line-clamp-2">
           {item.title || "Untitled"}
         </h3>
 
@@ -110,4 +109,4 @@ const ResultCard = ({ item }) => {
   );
 };
 
-export default ResultCard;
+export default Cards;
