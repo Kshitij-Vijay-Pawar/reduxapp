@@ -8,14 +8,14 @@ import Footer from '../components/Footer/Footer';
 
 const HomePage = () => {
   return (
-    <main className="text-(--text) w-full min-h-screen bg-(--bg)">
+    <div className="text-(--text) w-full min-h-screen bg-(--bg)">
         <Navbar />
         <SearchBar />
         <Tabs />
         <ResultGrid />
         <ToastContainer />
         <Footer />
-    </main>
+    </div>
   );
 };
 

@@ -1,13 +1,12 @@
 import { fetchPhotos, fetchVideos, fetchGIF } from "./mediaApi";
 
-export const fetchMedia = async (query, activeTab, pageNo = 1, cursor = null) => {
+export const fetchMedia = async (query, activeTab, pageNo = 1, cursor = null, perPage=20) => {
   let data = [];
   let totalPages = 1;
 
   if (activeTab === "photos") {
-    const response = await fetchPhotos(query, pageNo);
+    const response = await fetchPhotos(query, pageNo, perPage);
     totalPages = response.total_pages;
-
     data = response.results.map((item) => ({
       id: item.id,
       type: "photo",

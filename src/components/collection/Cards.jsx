@@ -21,6 +21,7 @@ const Cards = ({ item }) => {
         shadow-sm hover:shadow-xl
         transition-all duration-300
       "
+      onClick={() => navigate(`/details/${item.type}/${item.id}`)}
     >
       {/* Media */}
       <div className="relative h-52 overflow-hidden">

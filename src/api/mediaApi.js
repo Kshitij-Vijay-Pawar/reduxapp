@@ -45,5 +45,32 @@ const fetchGIF = async (query="anime", limit = 20, cursor = null) => {
   return res;
 };
 
+const fetchPhoto = async (id) => {
+  const res = await axios.get(
+    `https://api.unsplash.com/photos/${id}`,
+    {
+      headers: {
+        Authorization: `Client-ID ${UNSPLASH_KEY}`,
+      },
+    }
+  );
 
-export { fetchPhotos, fetchVideos, fetchGIF };
+  return res.data;
+};
+
+const fetchVideo = async (query="anime", page = 1, perPage = 20) => {
+    const res = await axios.get("https://api.pexels.com/videos/search", {
+        params: {
+            query: query,
+            page: page,
+            per_page: perPage
+        },
+        headers: {
+            Authorization: PEXELS_KEY
+        }
+    })
+    return res.data;
+};
+
+
+export { fetchPhotos, fetchVideos, fetchGIF, fetchPhoto };

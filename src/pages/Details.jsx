@@ -1,32 +1,43 @@
 import { useParams } from "react-router";
-import { useSelector } from "react-redux";
-import EmptyState from '../components/state/EmptyState';
+import { useDispatch, useSelector } from "react-redux";
+import EmptyState from "../components/state/EmptyState";
+import { useEffect, useState } from "react";
+import { setError } from "../redux/features/searchSlice";
+import { fetchDetails } from "../api/fetchDetails";
+import Navbar from "../components/Navbar";
+import DetailsSection from "../components/Details/DetailsSection";
+import SameData from "../components/Details/SameData";
 
 const Details = () => {
   const { type, id } = useParams();
+  const dispatch = useDispatch();
+  const [data, setData] = useState({});
 
-  // assuming all saved/fetched media are here
-//   const items = useSelector((state) => state.media.items);
+  //Reset scroll on new image
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, [id]);
 
-//   const item = items.find((el) => el.id === id);
+  useEffect(() => {
+    if (!type || !id) return;
 
-//   if (!item) {
-//     return (
-//       <div className="p-10 text-center text-(--text-muted)">
-//         <EmptyState />
-//       </div>
-//     );
-//   }
+    const getData = async () => {
+      try {
+        const result = await fetchDetails(type, id);
+        setData(result);
+      } catch (err) {
+        dispatch(setError(err.message));
+      }
+    };
+
+    getData();
+  }, [type, id, dispatch]);
 
   return (
-    <div className="min-h-screen bg-(--bg) text-(--text) p-8">
-      <div className="max-w-5xl mx-auto">
-        {/* {type === "photo" && <PhotoDetails item={item} />}
-        {type === "video" && <VideoDetails item={item} />}
-        {type === "gif" && <GifDetails item={item} />} */}
-        {type}
-        {id}
-      </div>
+    <div className="text-(--text) w-full min-h-screen bg-(--bg)">
+      <Navbar />
+      <DetailsSection data={data} />
+      <SameData data={data} />
     </div>
   );
 };

@@ -5,7 +5,7 @@ import { NavLink } from "react-router";
 
 const Navbar = () => {
   return (
-    <nav className="bg-transparent flex justify-around h-16 items-center">
+    <nav className="bg-transparent flex justify-around h-16 items-center shadow">
       <NavLink to="/" className="text-xl font-bold text-(--text)">
         ReduxApp
       </NavLink>

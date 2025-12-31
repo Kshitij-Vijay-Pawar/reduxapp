@@ -10,7 +10,7 @@ const CollectionPage = () => {
   const dispatch = useDispatch();
 
   return (
-    <main className="w-full min-h-screen bg-(--bg) text-(--text)">
+    <div className="w-full min-h-screen bg-(--bg) text-(--text)">
       <Navbar />
 
       {/* Header */}
@@ -49,7 +49,7 @@ const CollectionPage = () => {
           ))}
         </div>
       )}
-    </main>
+    </div>
   );
 };
 
