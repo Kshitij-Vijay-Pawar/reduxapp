@@ -3,7 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const searchSlice = createSlice({
   name: "search",
   initialState: {
-    query: "",
+    query: localStorage.getItem("query") || "",
     activeTab: "photos",
     results: [],
     loading: false,
@@ -16,7 +16,8 @@ const searchSlice = createSlice({
     setQuery(state, action) {
       state.query = action.payload;
       state.pageNo = 1;
-      state.nextCursor = null; // ✅ RESET
+      state.nextCursor = null;
+      localStorage.setItem("query", action.payload);
     },
 
     setActiveTabs(state, action) {
