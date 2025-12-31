@@ -17,7 +17,7 @@ const Footer = () => {
     try {
       dispatch(setLoading(true));
 
-      const response = await fetchGIF(query, 5, nextCursor);
+      const response = await fetchGIF(query, 15, nextCursor);
 
       const newGifs = response.data.results.map((item) => ({
         id: item.id,

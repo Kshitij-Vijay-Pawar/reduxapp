@@ -16,11 +16,13 @@ const searchSlice = createSlice({
     setQuery(state, action) {
       state.query = action.payload;
       state.pageNo = 1;
+      state.nextCursor = null; // ✅ RESET
     },
 
     setActiveTabs(state, action) {
       state.activeTab = action.payload;
       state.pageNo = 1;
+      state.nextCursor = null; // ✅ RESET
     },
 
     setLoading(state, action) {
@@ -59,7 +61,7 @@ export const {
   setResults,
   setError,
   setPageNo,
-  setPagination, 
+  setPagination,
   setGifCursor,
 } = searchSlice.actions;
 

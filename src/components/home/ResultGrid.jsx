@@ -23,28 +23,31 @@ const { query, activeTab, results, loading, error, pageNo, nextCursor } =
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (!query) return;
+  if (!query) return;
 
-    const getData = async () => {
-      try {
-        dispatch(setLoading(true));
-        const result = await fetchMedia(query, activeTab, pageNo, nextCursor);
+  // ❌ Prevent refetch when loading more GIFs
+  if (activeTab === "gifs" && nextCursor !== null) return;
 
+  const getData = async () => {
+    try {
+      dispatch(setLoading(true));
+      const result = await fetchMedia(query, activeTab, pageNo, null);
 
-        if (activeTab === "gifs") {
-          dispatch(setResults(result.data));
-          dispatch(setGifCursor(result.nextCursor));
-        } else {
-          dispatch(setResults(result.data));
-          dispatch(setPagination({ totalPages: result.totalPages }));
-        }
-      } catch (err) {
-        dispatch(setError(err.message));
+      if (activeTab === "gifs") {
+        dispatch(setResults(result.data)); // first load only
+        dispatch(setGifCursor(result.nextCursor));
+      } else {
+        dispatch(setResults(result.data));
+        dispatch(setPagination({ totalPages: result.totalPages }));
       }
-    };
+    } catch (err) {
+      dispatch(setError(err.message));
+    }
+  };
 
-    getData();
-  }, [query, activeTab, pageNo, dispatch]);
+  getData();
+}, [query, activeTab, pageNo, dispatch]);
+
 
   if (loading) return <LoadingState />;
   if (error) {
