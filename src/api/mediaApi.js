@@ -58,19 +58,47 @@ const fetchPhoto = async (id) => {
   return res.data;
 };
 
-const fetchVideo = async (query="anime", page = 1, perPage = 20) => {
-    const res = await axios.get("https://api.pexels.com/videos/search", {
-        params: {
-            query: query,
-            page: page,
-            per_page: perPage
-        },
-        headers: {
-            Authorization: PEXELS_KEY
-        }
-    })
-    return res.data;
+const fetchVideo = async (id) => {
+  const res = await axios.get(
+    `https://api.pexels.com/videos/videos/${id}`,
+    {
+      headers: {
+        Authorization: PEXELS_KEY,
+      },
+    }
+  );
+
+  return res.data;
+};
+
+const fetchGIFById = async (id) => {
+  const res = await axios.get(
+    "https://tenor.googleapis.com/v2/posts",
+    {
+      params: {
+        ids: id,        // 👈 IMPORTANT
+        key: TENOR_KEY,
+      },
+    }
+  );
+
+  // Tenor always returns an array
+  const gif = res.data.results?.[0];
+
+  if (!gif) return null;
+
+  return {
+    id: gif.id,
+    type: "gif",
+    title: gif.content_description,
+    url: gif.media_formats.gif.url,        // full GIF
+    preview: gif.media_formats.tinygif.url, // preview
+    width: gif.media_formats.gif.dims[0],
+    height: gif.media_formats.gif.dims[1],
+  };
 };
 
 
-export { fetchPhotos, fetchVideos, fetchGIF, fetchPhoto };
+
+
+export { fetchPhotos, fetchVideos, fetchGIF, fetchPhoto, fetchVideo, fetchGIFById };

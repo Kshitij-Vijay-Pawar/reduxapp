@@ -13,11 +13,6 @@ const Details = () => {
   const dispatch = useDispatch();
   const [data, setData] = useState({});
 
-  //Reset scroll on new image
-  useEffect(() => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  }, [id]);
-
   useEffect(() => {
     if (!type || !id) return;
 
@@ -33,11 +28,16 @@ const Details = () => {
     getData();
   }, [type, id, dispatch]);
 
+  //Reset scroll on new image
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, [id]);
+
   return (
     <div className="text-(--text) w-full min-h-screen bg-(--bg)">
       <Navbar />
-      <DetailsSection data={data} />
-      <SameData data={data} />
+      <DetailsSection data={data} type={type} id={id}/>
+      <SameData data={data} type={type} id={id}/>
     </div>
   );
 };

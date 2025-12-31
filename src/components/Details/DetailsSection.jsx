@@ -1,33 +1,64 @@
 import React from "react";
-import SameData from "./SameData";
 
 const DetailsSection = ({ data }) => {
-  const { author, raw, title } = data;
+  const { author, raw, title, url, type, id } = data || {};
 
-  const downloadImage = async (url, filename = "image.jpg") => {
-    const res = await fetch(url);
-    const blob = await res.blob();
+  const downloadMedia = async (url, filename = "media") => {
+    if (!url) return;
 
-    const link = document.createElement("a");
-    link.href = URL.createObjectURL(blob);
-    link.download = filename;
-    link.click();
+    try {
+      const res = await fetch(url, { mode: "cors" });
+      const blob = await res.blob();
 
-    URL.revokeObjectURL(link.href);
+      const blobUrl = URL.createObjectURL(blob);
+
+      const link = document.createElement("a");
+      link.href = blobUrl;
+      link.download = filename;
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+
+      URL.revokeObjectURL(blobUrl);
+    } catch (err) {
+      console.error("Download failed", err);
+    }
   };
 
   return (
     <main className="w-full text-(--text)">
-      {/* Image */}
-      <div className="mx-auto w-[70%] mt-10 rounded-xl overflow-hidden bg-(--surface) shadow-lg">
-        <img
-          src={raw}
-          alt={title}
-          className="w-full object-cover object-center"
-        />
+      {/* Media */}
+      <div
+        className="mx-auto mt-10
+    w-[70vw] max-w-350
+    aspect-video
+    rounded-xl
+    overflow-hidden
+    bg-(--surface)
+    border border-(--border)
+    shadow-lg "
+      >
+        {type === "photo" && raw && (
+          <img src={raw} alt={title} className="w-full h-full object-cover" />
+        )}
+
+        {type === "video" && url && (
+          <video
+            src={url}
+            autoPlay
+            loop
+            muted
+            controls
+            className="w-full h-full object-cover"
+          />
+        )}
+
+        {type === "gif" && url && (
+          <img src={url} alt={title} className="w-full h-full object-cover" />
+        )}
       </div>
 
-      {/* Info Section */}
+      {/* Info */}
       <div
         className="
           w-[70%] mx-auto mt-8
@@ -38,24 +69,38 @@ const DetailsSection = ({ data }) => {
           p-6
         "
       >
-        {/* Text */}
         <div className="space-y-2">
           <h1 className="font-bold text-4xl capitalize">
-            {title || "Unknown Author"}
+            {title || "Untitled"}
           </h1>
-          <p className="text-(--text-muted) capitalize">
-            {author || "Untitled"}
-          </p>
+          <p className="text-(--text-muted)">{author || "Unknown Author"}</p>
+          {type === "gif" && url && (
+            <p className="text-sm text-(--text-muted)">GIFs powered by Tenor</p>
+          )}
         </div>
 
         <button
-          onClick={() => downloadImage(raw)}
-          className="uppercase font-medium
-            px-6 py-3 rounded-lg
-            bg-(--primary) text-black
-            hover:opacity-90
-            active:scale-95
-            transition"
+          onClick={() => {
+            if (type === "photo") {
+              downloadMedia(raw, `${title || "image"}.jpg`);
+            }
+
+            if (type === "gif") {
+              downloadMedia(url, `${title || "gif"}.gif`);
+            }
+
+            if (type === "video") {
+              downloadMedia(url, `${title || "video"}.mp4`);
+            }
+          }}
+          className="
+    px-6 py-3 rounded-lg
+    bg-(--primary) text-black
+    font-medium uppercase
+    hover:opacity-90
+    active:scale-95
+    transition
+  "
         >
           Download
         </button>
