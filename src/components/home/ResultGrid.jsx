@@ -4,6 +4,7 @@ import {
   setLoading,
   setError,
   setResults,
+  setPagination,
 } from "../../redux/features/searchSlice";
 import { fetchMedia } from "../../api/fetchMedia";
 
@@ -24,18 +25,23 @@ const ResultGrid = () => {
     const getData = async () => {
       try {
         dispatch(setLoading(true));
-        const data = await fetchMedia(query, activeTab, pageNo);
+        const { data, totalPages } = await fetchMedia(query, activeTab, pageNo);
+
         dispatch(setResults(data));
+        dispatch(setPagination({ totalPages }));
       } catch (err) {
         dispatch(setError(err.message));
       }
     };
 
     getData();
-  }, [query, activeTab, pageNo, dispatch]); // ✅ pageNo added
+  }, [query, activeTab, pageNo, dispatch]);
 
   if (loading) return <LoadingState />;
-  if (error) return <ErrorState message={error} />;
+  if (error) {
+    console.log(error.message)
+    return <ErrorState message={error} />;
+  }
   if (results.length === 0) return <EmptyState />;
 
   return (

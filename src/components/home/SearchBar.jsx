@@ -9,7 +9,6 @@ const SearchBar = () => {
 
     const submitHandler = (e) => {
         e.preventDefault();
-        console.log("Searching for", text);
     };
 
     return (

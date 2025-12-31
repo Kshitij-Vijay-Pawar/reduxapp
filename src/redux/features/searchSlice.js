@@ -8,19 +8,18 @@ const searchSlice = createSlice({
     results: [],
     loading: false,
     error: null,
-    pageNo: 1,          // ✅ page number state
-    total: 0,           // (optional but recommended)
-    totalPages: 0,      // (optional but recommended)
+    pageNo: 1,
+    totalPages: 0,
   },
   reducers: {
     setQuery(state, action) {
       state.query = action.payload;
-      state.pageNo = 1; // reset page on new search
+      state.pageNo = 1;
     },
 
     setActiveTabs(state, action) {
       state.activeTab = action.payload;
-      state.pageNo = 1; // reset page on tab change
+      state.pageNo = 1;
     },
 
     setLoading(state, action) {
@@ -38,19 +37,12 @@ const searchSlice = createSlice({
       state.loading = false;
     },
 
-    clearResults(state) {
-      state.results = [];
-      state.pageNo = 1;
-    },
-
-    // ✅ PAGE NUMBER SETTER
     setPageNo(state, action) {
       state.pageNo = action.payload;
     },
 
-    // (optional) store totals for footer
+    // ✅ THIS WAS MISSING OR NOT EXPORTED
     setPagination(state, action) {
-      state.total = action.payload.total;
       state.totalPages = action.payload.totalPages;
     },
   },
@@ -62,9 +54,8 @@ export const {
   setLoading,
   setResults,
   setError,
-  clearResults,
   setPageNo,
-  setPagination,
+  setPagination, // ✅ MUST BE HERE
 } = searchSlice.actions;
 
 export default searchSlice.reducer;

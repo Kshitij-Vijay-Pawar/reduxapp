@@ -1,14 +1,13 @@
-import { fetchPhotos, fetchVideos, fetchGIF } from "./mediaApi.js";
+import { fetchPhotos, fetchVideos, fetchGIF } from "./mediaApi";
 
-/**
- * SAME return shape (array only)
- * Just adds pageNo support
- */
 export const fetchMedia = async (query, activeTab, pageNo = 1) => {
   let data = [];
+  let totalPages = 1;
 
   if (activeTab === "photos") {
     const response = await fetchPhotos(query, pageNo);
+    totalPages = response.total_pages;
+
     data = response.results.map((item) => ({
       id: item.id,
       type: "photo",
@@ -22,6 +21,8 @@ export const fetchMedia = async (query, activeTab, pageNo = 1) => {
 
   if (activeTab === "videos") {
     const response = await fetchVideos(query, pageNo);
+    totalPages = Math.ceil(response.total_results / 20);
+
     data = response.videos.map((item) => ({
       id: item.id,
       type: "video",
@@ -32,8 +33,9 @@ export const fetchMedia = async (query, activeTab, pageNo = 1) => {
   }
 
   if (activeTab === "gifs") {
-    // Tenor API doesn't support page properly, keep it simple
     const response = await fetchGIF(query);
+    totalPages = 1;
+
     data = response.data.results.map((item) => ({
       id: item.id,
       type: "gif",
@@ -43,5 +45,5 @@ export const fetchMedia = async (query, activeTab, pageNo = 1) => {
     }));
   }
 
-  return data;
+  return { data, totalPages };
 };
