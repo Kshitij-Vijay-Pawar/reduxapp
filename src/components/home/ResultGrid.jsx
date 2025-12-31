@@ -5,6 +5,7 @@ import {
   setError,
   setResults,
   setPagination,
+  setGifCursor,
 } from "../../redux/features/searchSlice";
 import { fetchMedia } from "../../api/fetchMedia";
 
@@ -14,9 +15,11 @@ import EmptyState from "../state/EmptyState";
 import ResultCard from "./ResultCard";
 
 const ResultGrid = () => {
-  const { query, activeTab, results, loading, error, pageNo } = useSelector(
-    (state) => state.search
-  );
+
+const { query, activeTab, results, loading, error, pageNo, nextCursor } =
+  useSelector((state) => state.search);
+
+
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -25,10 +28,16 @@ const ResultGrid = () => {
     const getData = async () => {
       try {
         dispatch(setLoading(true));
-        const { data, totalPages } = await fetchMedia(query, activeTab, pageNo);
+        const result = await fetchMedia(query, activeTab, pageNo, nextCursor);
 
-        dispatch(setResults(data));
-        dispatch(setPagination({ totalPages }));
+
+        if (activeTab === "gifs") {
+          dispatch(setResults(result.data));
+          dispatch(setGifCursor(result.nextCursor));
+        } else {
+          dispatch(setResults(result.data));
+          dispatch(setPagination({ totalPages: result.totalPages }));
+        }
       } catch (err) {
         dispatch(setError(err.message));
       }
@@ -39,7 +48,7 @@ const ResultGrid = () => {
 
   if (loading) return <LoadingState />;
   if (error) {
-    console.log(error.message)
+    console.log(error.message);
     return <ErrorState message={error} />;
   }
   if (results.length === 0) return <EmptyState />;

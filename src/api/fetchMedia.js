@@ -1,6 +1,6 @@
 import { fetchPhotos, fetchVideos, fetchGIF } from "./mediaApi";
 
-export const fetchMedia = async (query, activeTab, pageNo = 1) => {
+export const fetchMedia = async (query, activeTab, pageNo = 1, cursor = null) => {
   let data = [];
   let totalPages = 1;
 
@@ -33,8 +33,8 @@ export const fetchMedia = async (query, activeTab, pageNo = 1) => {
   }
 
   if (activeTab === "gifs") {
-    const response = await fetchGIF(query);
-    totalPages = 1;
+      const response = await fetchGIF(query, 20, cursor);
+
 
     data = response.data.results.map((item) => ({
       id: item.id,
@@ -43,6 +43,11 @@ export const fetchMedia = async (query, activeTab, pageNo = 1) => {
       thumbnail: item.media_formats.tinygif.url,
       url: item.media_formats.gif.url,
     }));
+
+    return {
+      data,
+      nextCursor: response.data.next || null,
+    };
   }
 
   return { data, totalPages };

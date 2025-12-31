@@ -32,15 +32,18 @@ const fetchVideos = async (query="anime", page = 1, perPage = 20) => {
     return res.data;
 };
 
-const fetchGIF = async (query="anime", limit = 40) => {
-    const res = await axios.get("https://tenor.googleapis.com/v2/search", {
-        params: {
-            q: query,
-            key: TENOR_KEY,
-            limit: limit
-        },
-    })
-    return res;
+
+const fetchGIF = async (query="anime", limit = 20, cursor = null) => {
+  const res = await axios.get("https://tenor.googleapis.com/v2/search", {
+    params: {
+      q: query,
+      key: TENOR_KEY,
+      limit,
+      pos: cursor, // ✅ THIS IS REQUIRED
+    },
+  });
+  return res;
 };
+
 
 export { fetchPhotos, fetchVideos, fetchGIF };

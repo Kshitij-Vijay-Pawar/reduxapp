@@ -10,6 +10,7 @@ const searchSlice = createSlice({
     error: null,
     pageNo: 1,
     totalPages: 0,
+    nextCursor: null,
   },
   reducers: {
     setQuery(state, action) {
@@ -45,6 +46,9 @@ const searchSlice = createSlice({
     setPagination(state, action) {
       state.totalPages = action.payload.totalPages;
     },
+    setGifCursor(state, action) {
+      state.nextCursor = action.payload;
+    },
   },
 });
 
@@ -55,7 +59,8 @@ export const {
   setResults,
   setError,
   setPageNo,
-  setPagination, // ✅ MUST BE HERE
+  setPagination, 
+  setGifCursor,
 } = searchSlice.actions;
 
 export default searchSlice.reducer;

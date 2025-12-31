@@ -1,12 +1,56 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setPageNo } from "../../redux/features/searchSlice";
+import {
+  setLoading,
+  setPageNo,
+  setResults,
+  setGifCursor,
+} from "../../redux/features/searchSlice";
+import { fetchGIF } from "../../api/mediaApi";
 
 const Footer = () => {
-  const { pageNo, totalPages, loading } = useSelector(
-    (state) => state.search
-  );
+  const { pageNo, totalPages, loading, activeTab, query, nextCursor, results } =
+    useSelector((state) => state.search);
   const dispatch = useDispatch();
+
+  const handleLoadMore = async () => {
+    try {
+      dispatch(setLoading(true));
+
+      const response = await fetchGIF(query, 5, nextCursor);
+
+      const newGifs = response.data.results.map((item) => ({
+        id: item.id,
+        type: "gif",
+        title: item.content_description || "gif",
+        thumbnail: item.media_formats.tinygif.url,
+        url: item.media_formats.gif.url,
+      }));
+
+      dispatch(setResults([...results, ...newGifs]));
+      dispatch(setGifCursor(response.data.next || null));
+    } catch (err) {
+      console.error("Load more GIFs failed:", err);
+    }
+  };
+
+  if (activeTab === "gifs")
+    return (
+      <footer className="flex justify-center py-8">
+        <button
+          onClick={handleLoadMore}
+          disabled={loading}
+          className="
+          px-6 py-3 rounded-md font-medium
+          bg-(--primary) text-black
+          hover:opacity-90 transition
+          disabled:opacity-50 disabled:cursor-not-allowed
+        "
+        >
+          {loading ? "Loading..." : "Load More GIFs"}
+        </button>
+      </footer>
+    );
 
   if (loading || totalPages <= 1) return null;
 
