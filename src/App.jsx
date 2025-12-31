@@ -9,7 +9,7 @@ function App() {
       <Routes>
           <Route index element={<HomePage />} />
           <Route path="collection" element={<CollectionPage />} />
-          <Route path=":pid" element={<Details />} />
+          <Route path="/details/:type/:id" element={<Details />} />
       </Routes>
     </>
   );

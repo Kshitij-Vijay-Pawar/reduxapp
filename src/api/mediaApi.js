@@ -18,7 +18,7 @@ const fetchPhotos = async (query="anime", page = 1, perPage = 20) => {
     return res.data;
 }
 
-const fetchVideos = async (query="anime", page = 1, perPage = 15) => {
+const fetchVideos = async (query="anime", page = 1, perPage = 20) => {
     const res = await axios.get("https://api.pexels.com/videos/search", {
         params: {
             query: query,
@@ -32,7 +32,7 @@ const fetchVideos = async (query="anime", page = 1, perPage = 15) => {
     return res.data;
 };
 
-const fetchGIF = async (query="anime", limit = 20) => {
+const fetchGIF = async (query="anime", limit = 40) => {
     const res = await axios.get("https://tenor.googleapis.com/v2/search", {
         params: {
             q: query,

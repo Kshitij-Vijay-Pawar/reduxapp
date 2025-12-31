@@ -1,9 +1,10 @@
 import React from "react";
-import SearchBar from "../components/SearchBar";
-import Tabs from "../components/Tabs";
-import ResultGrid from "../components/ResultGrid";
+import SearchBar from "../components/home/SearchBar";
+import Tabs from "../components/home/Tabs";
+import ResultGrid from "../components/home/ResultGrid";
 import { ToastContainer } from "react-toastify";
 import Navbar from "../components/Navbar";
+import Footer from '../components/Footer/Footer';
 
 const HomePage = () => {
   return (
@@ -13,6 +14,7 @@ const HomePage = () => {
         <Tabs />
         <ResultGrid />
         <ToastContainer />
+        <Footer />
     </main>
   );
 };

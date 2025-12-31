@@ -2,8 +2,8 @@ import React from "react";
 import Navbar from "../components/Navbar";
 import { useDispatch, useSelector } from "react-redux";
 import { clearCollection } from "../redux/features/collecionSlice";
-import Cards from "../components/Cards";
-import EmptyState from "../components/EmptyState";
+import Cards from "../components/collection/Cards";
+import EmptyState from "../components/state/EmptyState";
 
 const CollectionPage = () => {
   const { items } = useSelector((state) => state.collection);

@@ -1,6 +1,6 @@
 import React from "react";
 import { useDispatch } from "react-redux";
-import { removeCollection } from "../redux/features/collecionSlice";
+import { removeCollection } from "../../redux/features/collecionSlice";
 import { toast } from "react-toastify";
 
 const Cards = ({ item }) => {
