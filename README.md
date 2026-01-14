@@ -37,3 +37,7 @@ export default defineConfig({
 ### Import Tailwind CSS
 Add an @import to your CSS file that imports Tailwind CSS.
 ```@import "tailwindcss";```
+
+
+Tenor is shutting down its Tenor API.
+After June 30, 2026 → The API will stop completely and all requests will return errors
